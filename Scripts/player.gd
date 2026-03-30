@@ -1,7 +1,11 @@
 extends CharacterBody3D
 
-const SPEED = 5.0
-const MOUSE_SENSITIVITY = 0.003
+var SPEED: float = 5.0
+const MOUSE_SENSITIVITY: float = 0.003
+
+const orginal_stamina: float = 20.0
+var stamina: float = orginal_stamina
+var sprinting: bool = false
 
 @onready var camera := $PlayerCamera
 
@@ -18,6 +22,24 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
+	if Input.is_action_just_pressed("sprint"):
+		if sprinting == true:
+			sprinting = false
+		elif sprinting == false:
+			sprinting = true
+	
+	if sprinting:
+		if stamina < 0.0:
+			sprinting = false
+		stamina -= 0.1
+		SPEED = 10.0
+	elif !sprinting:
+		if stamina < orginal_stamina:
+			stamina += 0.05
+		SPEED = 5.0
+	
+	print(stamina)
+	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
@@ -30,3 +52,12 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 	move_and_slide()
+
+# DEBUG CODE
+func _init():
+	RenderingServer.set_debug_generate_wireframes(true)
+
+func _input(event):
+	if event is InputEventKey and Input.is_key_pressed(KEY_SEMICOLON):
+		var vp = get_viewport()
+		vp.debug_draw = (vp.debug_draw + 1) % 5
