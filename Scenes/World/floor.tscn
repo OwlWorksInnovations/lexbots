@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://chjtwa2eiat50"]
+
+[ext_resource type="Texture2D" uid="uid://ddrdm3c3hjvs0" path="res://Assets/Road015C_1K-JPG/Road015C_1K-JPG_Color.jpg" id="1_7nik6"]
+[ext_resource type="Texture2D" uid="uid://be6mpflgmuebb" path="res://Assets/Road015C_1K-JPG/Road015C_1K-JPG_AmbientOcclusion.jpg" id="2_5tlvi"]
+[ext_resource type="Texture2D" uid="uid://dtepqqwnvnniy" path="res://Assets/Road015C_1K-JPG/Road015C_1K-JPG_Displacement.jpg" id="3_5ur7u"]
+[ext_resource type="Texture2D" uid="uid://g7nujwuiu460" path="res://Assets/Road015C_1K-JPG/Road015C_1K-JPG_NormalGL.jpg" id="4_2p68f"]
+[ext_resource type="Texture2D" uid="uid://3m4i26i1gcvu" path="res://Assets/Road015C_1K-JPG/Road015C_1K-JPG_Roughness.jpg" id="5_2vn45"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8gwv5"]
+albedo_texture = ExtResource("1_7nik6")
+roughness_texture = ExtResource("5_2vn45")
+normal_enabled = true
+normal_texture = ExtResource("4_2p68f")
+ao_enabled = true
+ao_texture = ExtResource("2_5tlvi")
+heightmap_enabled = true
+heightmap_texture = ExtResource("3_5ur7u")
+grow_amount = -0.608
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ut318"]
+material = SubResource("StandardMaterial3D_8gwv5")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_7nik6"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[node name="Floor" type="MeshInstance3D" unique_id=81861443]
+mesh = SubResource("PlaneMesh_ut318")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2026726849]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=257207282]
+shape = SubResource("ConcavePolygonShape3D_7nik6")
